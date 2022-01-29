@@ -4,13 +4,20 @@ import Announcements from "../components/Announcements";
 import { Footer } from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
-import productImg from "../images/MagMockup1.jpg";
+// import productImg from "../images/MagMockup1.jpg";
+import { mobile } from "../responsive";
+import { useLocation } from "react-router";
+import { useEffect, useState } from "react";
+import { publicRequest } from "../requestMethods";
+import { addProduct } from "../redux/cartRedux";
+import { useDispatch } from "react-redux";
 
 const Container = styled.div``;
 
 const Wrapper = styled.div`
   padding: 50px;
   display: flex;
+  ${mobile({ flexDirection: "column", padding: "10px" })}
 `;
 
 const ImgContainer = styled.div`
@@ -21,11 +28,13 @@ const Image = styled.img`
   width: 100%;
   height: 70vh;
   object-fit: cover;
+  ${mobile({ height: "40vh" })}
 `;
 
 const InfoContainer = styled.div`
   flex: 1;
   padding: 0px 50px;
+  ${mobile({ padding: "10px" })}
 `;
 
 const Title = styled.h1``;
@@ -44,6 +53,7 @@ const FilterContainer = styled.div`
   margin: 30px 0px;
   display: flex;
   justify-content: space-between;
+  ${mobile({ width: "100%" })}
 `;
 
 const Filter = styled.div`
@@ -72,10 +82,11 @@ const FilterSize = styled.select`
 const FilterSizeOption = styled.option``;
 
 const AddContainer = styled.div`
+  width: 50%;
   display: flex;
   align-items: center;
-  width: 50%;
-  justifiy-content: space-between;
+  justify-content: space-between;
+  ${mobile({ width: "100%" })}
 `;
 
 const AmountContainer = styled.div`
@@ -107,47 +118,70 @@ const Button = styled.button`
 `;
 
 const Product = () => {
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
+  const [product, setProduct] = useState({});
+  const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getProduct = async () => {
+      try {
+        const res = await publicRequest.get("/products/find/" + id);
+        setProduct(res.data);
+      } catch {}
+    };
+    getProduct();
+  }, [id]);
+
+  const handleQuantity = (type) => {
+    if (type === "dec") {
+      quantity > 1 && setQuantity(quantity - 1);
+    } else {
+      setQuantity(quantity + 1);
+    }
+  };
+
+  const handleClick = () => {
+    dispatch(addProduct({ ...product, quantity, color, size }));
+  };
   return (
     <Container>
       <Navbar />
       <Announcements />
       <Wrapper>
         <ImgContainer>
-          <Image src={productImg} />
+          <Image src={product.img} />
         </ImgContainer>
         <InfoContainer>
-          <Title>Magazine Layout Mockup</Title>
-          <Description>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sint eaque
-            quaerat delectus, nostrum officiis cupiditate nobis voluptatibus
-            dolorem repudiandae nesciunt? Fugiat veritatis dolorem veniam quos
-            cupiditate, distinctio eaque doloremque! Eius.
-          </Description>
-          <Price>$20</Price>
+          <Title>{product.title}</Title>
+          <Description>{product.description}</Description>
+          <Price>$ {product.price}</Price>
           <FilterContainer>
             <Filter>
-              <FilterTitle>Size</FilterTitle>
-              <FilterSize>
-                <FilterSizeOption>Photos</FilterSizeOption>
-                <FilterSizeOption>Graphics</FilterSizeOption>
-                <FilterSizeOption>Templates</FilterSizeOption>
-                <FilterSizeOption>Fonts</FilterSizeOption>
-              </FilterSize>
+              <FilterTitle>Color</FilterTitle>
+              {product.color?.map((c) => (
+                <FilterColor color={c} key={c} onClick={() => setColor(c)} />
+              ))}
             </Filter>
             <Filter>
-              <FilterTitle>File Color</FilterTitle>
-              <FilterColor color="blue" />
-              <FilterColor color="pink" />
-              <FilterColor color="yellow" />
+              <FilterTitle>Size</FilterTitle>
+              <FilterSize onChange={(e) => setSize(e.target.value)}>
+                {product.size?.map((s) => (
+                  <FilterSizeOption key={s}>{s}</FilterSizeOption>
+                ))}
+              </FilterSize>
             </Filter>
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
+              <Remove onClick={() => handleQuantity("dec")} />
+              <Amount>{quantity}</Amount>
+              <Add onClick={() => handleQuantity("inc")} />
             </AmountContainer>
-            <Button>ADD TO CART</Button>
+            <Button onClick={handleClick}>ADD TO CART</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>
@@ -156,5 +190,4 @@ const Product = () => {
     </Container>
   );
 };
-
 export default Product;

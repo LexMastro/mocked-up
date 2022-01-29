@@ -13,7 +13,6 @@ import productImg6 from "./images/TowelMockup.jpg";
 import productImg7 from "./images/WineBottleMockup.jpg";
 import productImg8 from "./images/PosterMockup.jpg";
 
-
 export const sliderItems = [
   {
     id: 1,
@@ -43,16 +42,19 @@ export const categories = [
     id: 1,
     img: categoryImg1,
     title: "PACKAGING MOCKUPS",
+    cat: "packaging",
   },
   {
     id: 2,
     img: categoryImg2,
     title: "ADVERTISING MOCKUPS",
+    cat: "advertising",
   },
   {
     id: 3,
     img: categoryImg3,
     title: "STAIONARY MOCKUPS",
+    cat: "stationary",
   },
 ];
 
@@ -90,4 +92,3 @@ export const popularProducts = [
     img: productImg8,
   },
 ];
-

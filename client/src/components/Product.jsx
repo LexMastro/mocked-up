@@ -4,14 +4,16 @@ import {
   ShoppingCartOutlined,
 } from "@material-ui/icons";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Info = styled.div`
+  opacity: 0;
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.2);
   z-index: 3;
   display: flex;
   align-items: center;
@@ -31,9 +33,7 @@ const Container = styled.div`
   position: relative;
 
   &:hover ${Info} {
-    opacity: 0.5;
-    transition: opacity 0.2s ease;
-    display: block;
+    opacity: 1;
   }
 `;
 
@@ -47,12 +47,10 @@ const Circle = styled.div`
 
 const Image = styled.img`
   height: 75%;
-  object-fit: cover;
   z-index: 2;
 `;
 
 const Icon = styled.div`
-  opacity: 0;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -79,7 +77,9 @@ const Product = ({ item }) => {
           <ShoppingCartOutlined />
         </Icon>
         <Icon>
-          <SearchOutlined />
+          <Link to={`/product/${item._id}`}>
+            <SearchOutlined />
+          </Link>
         </Icon>
         <Icon>
           <FavoriteBorderOutlined />

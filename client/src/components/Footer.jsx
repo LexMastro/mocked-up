@@ -9,9 +9,11 @@ import {
 import styled from "styled-components";
 import React from "react";
 import paymentImg from "../images/stripePayments.png";
+import { mobile } from "../responsive";
 
 const Container = styled.div`
   display: flex;
+  ${mobile({ flexDirection: "column" })}
 `;
 
 const Left = styled.div`
@@ -43,6 +45,7 @@ const SocialIcon = styled.div`
 const Center = styled.div`
   flex: 1;
   padding: 20px;
+  ${mobile({ display: "none" })}
 `;
 
 const Title = styled.h3`
@@ -65,6 +68,7 @@ const ListItem = styled.li`
 const Right = styled.div`
   flex: 1;
   padding: 20px;
+  ${mobile({ backgroundColor: "#ffffef" })}
 `;
 
 const ContactItem = styled.div`
@@ -81,7 +85,7 @@ export const Footer = ({ item }) => {
   return (
     <Container>
       <Left>
-        <Logo>LOGO.</Logo>
+        <Logo>MOCKED UP.</Logo>
         <Description>
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga maiores
           amet ipsum fugiat. Quo doloremque soluta nam in quam esse sed animi
@@ -121,7 +125,7 @@ export const Footer = ({ item }) => {
           <LocalPhone style={{ marginRight: "10px" }} /> 0477 211 551
         </ContactItem>
         <ContactItem>
-          <AlternateEmail style={{ marginRight: "10px" }} /> info@logo.com
+          <AlternateEmail style={{ marginRight: "10px" }} /> info@mockedup.com
         </ContactItem>
         <Payment src={paymentImg} />
       </Right>
