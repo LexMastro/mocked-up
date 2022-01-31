@@ -1,12 +1,12 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@material-ui/icons";
+import { useState } from "react";
 import styled from "styled-components";
 import { sliderItems } from "../data";
-import { useState } from "react";
 import { mobile } from "../responsive";
 
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 80vh;
   display: flex;
   position: relative;
   overflow: hidden;
@@ -35,22 +35,23 @@ const Arrow = styled.div`
 const Wrapper = styled.div`
   height: 100%;
   display: flex;
-  transform: translateX(${(props) => props.slideIndex * -100}vw);
   transition: all 1.5s ease;
+  transform: translateX(${(props) => props.slideIndex * -100}vw);
 `;
 
 const Slide = styled.div`
-  display: flex;
-  align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: ${(props) => props.bg};
+  display: flex;
+  align-items: center;
+  background-color: #${(props) => props.bg};
 `;
 
 const ImgContainer = styled.div`
-  flex: 1;
   height: 100%;
+  flex: 1;
 `;
+
 const Image = styled.img`
   height: 80%;
 `;
@@ -68,17 +69,15 @@ const Desc = styled.p`
   margin: 50px 0px;
   font-size: 20px;
   font-weight: 500;
-  letting-spacing: 3px;
+  letter-spacing: 3px;
 `;
 
-const Button = styled.button`
-  padding: 10px;
-  font-size: 20px;
-  background-color: transparent;
-  cursor: pointer;
-  border-radius: 5px;
-  border: 1px solid gray;
-`;
+// const Button = styled.button`
+//   padding: 10px;
+//   font-size: 20px;
+//   background-color: transparent;
+//   cursor: pointer;
+// `;
 
 const Slider = () => {
   const [slideIndex, setSlideIndex] = useState(0);
@@ -104,7 +103,7 @@ const Slider = () => {
             <InfoContainer>
               <Title>{item.title}</Title>
               <Desc>{item.desc}</Desc>
-              <Button>SHOP NOW</Button>
+              {/* <Button>SHOW NOW</Button> */}
             </InfoContainer>
           </Slide>
         ))}

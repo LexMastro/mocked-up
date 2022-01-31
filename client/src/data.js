@@ -1,94 +1,44 @@
-import carouselImg1 from "./images/preview.jpg";
-import carouselImg2 from "./images/PackageBoxMockup.jpg";
-import carouselImg3 from "./images/preview2.jpg";
-import categoryImg1 from "./images/CoffeeCupMockup.jpg";
-import categoryImg2 from "./images/MagazineCoverMockup.jpg";
-import categoryImg3 from "./images/RingedBooksMockup.jpg";
-import productImg1 from "./images/BusinessCardMockup.png";
-import productImg2 from "./images/GinBottleMockUp.png";
-import productImg3 from "./images/EventTicketMockup.jpg";
-import productImg4 from "./images/MagMockup1.jpg";
-import productImg5 from "./images/MemphisMockup.jpg";
-import productImg6 from "./images/TowelMockup.jpg";
-import productImg7 from "./images/WineBottleMockup.jpg";
-import productImg8 from "./images/PosterMockup.jpg";
-
 export const sliderItems = [
   {
     id: 1,
-    img: carouselImg1,
-    title: "SUMMER SALE",
-    desc: "30% OFF ALL MOCKUPS!",
-    bg: "#E1FAFD",
+    img: "https://www.mockupworld.co/wp-content/uploads/dynamic/2021/12/free-cosmetic-bottle-with-box-mockup-psd-1072x0-c-default.jpg",
+    title: "PACKAGING MOCKUPS",
+    desc: "Add your own branding to boxes, bottles, bags and business essentials!",
+    bg: "ffffff",
   },
   {
     id: 2,
-    img: carouselImg2,
-    title: "SUMMER SALE",
-    desc: "30% OFF ALL MOCKUPS!",
-    bg: "#E1E5FD",
+    img: "https://www.mockupworld.co/wp-content/uploads/dynamic/2019/10/free-hanging-poster-with-shadows-mockup-psd-1072x0-c-default.jpg",
+    title: "ADVERTISING MOCKUPS",
+    desc: "Add your own branding to street signs, posters, billbaords and magazines!",
+    bg: "ffffff",
   },
   {
     id: 3,
-    img: carouselImg3,
-    title: "SUMMER SALE",
-    desc: "30% OFF ALL MOCKUPS!",
-    bg: "#FDF0E1",
+    img: "https://www.mockupworld.co/wp-content/uploads/dynamic/2022/01/free-iphone-13-isometric-mockup-psd-1072x0-c-default.jpg",
+    title: "DIGITAL MOCKUPS",
+    desc: "Add your own branding to digital devices and social pages",
+    bg: "ffffff",
   },
 ];
 
 export const categories = [
   {
     id: 1,
-    img: categoryImg1,
-    title: "PACKAGING MOCKUPS",
-    cat: "packaging",
-  },
-  {
-    id: 2,
-    img: categoryImg2,
-    title: "ADVERTISING MOCKUPS",
+    img: "https://www.mockupworld.co/wp-content/uploads/dynamic/2020/04/free-magazine-showcase-mockup-psd-1072x0-c-default.jpg",
+    title: "ADVERTISING",
     cat: "advertising",
   },
   {
-    id: 3,
-    img: categoryImg3,
-    title: "STAIONARY MOCKUPS",
-    cat: "stationary",
-  },
-];
-
-export const popularProducts = [
-  {
-    id: 1,
-    img: productImg1,
-  },
-  {
     id: 2,
-    img: productImg2,
+    img: "https://www.mockupworld.co/wp-content/uploads/dynamic/2021/10/free-m1-ipad-pro-magic-keyboard-mockup-psd-1072x0-c-default.jpg",
+    title: "DIGITAL",
+    cat: "digital",
   },
   {
     id: 3,
-    img: productImg3,
-  },
-  {
-    id: 4,
-    img: productImg4,
-  },
-  {
-    id: 5,
-    img: productImg5,
-  },
-  {
-    id: 6,
-    img: productImg6,
-  },
-  {
-    id: 7,
-    img: productImg7,
-  },
-  {
-    id: 8,
-    img: productImg8,
+    img: "https://www.mockupworld.co/wp-content/uploads/dynamic/2020/06/free-isometric-small-boxes-mockup-1072x0-c-default.jpg",
+    title: "PACKAGING",
+    cat: "packaging",
   },
 ];

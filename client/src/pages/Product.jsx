@@ -1,12 +1,11 @@
 import { Add, Remove } from "@material-ui/icons";
 import styled from "styled-components";
-import Announcements from "../components/Announcements";
-import { Footer } from "../components/Footer";
+import Announcement from "../components/Announcement";
+import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
-// import productImg from "../images/MagMockup1.jpg";
 import { mobile } from "../responsive";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethods";
 import { addProduct } from "../redux/cartRedux";
@@ -17,7 +16,7 @@ const Container = styled.div``;
 const Wrapper = styled.div`
   padding: 50px;
   display: flex;
-  ${mobile({ flexDirection: "column", padding: "10px" })}
+  ${mobile({ padding: "10px", flexDirection: "column" })}
 `;
 
 const ImgContainer = styled.div`
@@ -26,7 +25,7 @@ const ImgContainer = styled.div`
 
 const Image = styled.img`
   width: 100%;
-  height: 70vh;
+  height: 90vh;
   object-fit: cover;
   ${mobile({ height: "40vh" })}
 `;
@@ -37,14 +36,16 @@ const InfoContainer = styled.div`
   ${mobile({ padding: "10px" })}
 `;
 
-const Title = styled.h1``;
+const Title = styled.h1`
+  font-weight: 200;
+`;
 
-const Description = styled.p`
+const Desc = styled.p`
   margin: 20px 0px;
-  line-height: 1.6;
 `;
 
 const Price = styled.span`
+  font-weight: 100;
   font-size: 40px;
 `;
 
@@ -62,7 +63,8 @@ const Filter = styled.div`
 `;
 
 const FilterTitle = styled.span`
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 200;
 `;
 
 const FilterColor = styled.div`
@@ -73,13 +75,6 @@ const FilterColor = styled.div`
   margin: 0px 5px;
   cursor: pointer;
 `;
-
-const FilterSize = styled.select`
-  margin-left: 10px;
-  padding: 5px;
-`;
-
-const FilterSizeOption = styled.option``;
 
 const AddContainer = styled.div`
   width: 50%;
@@ -92,13 +87,14 @@ const AddContainer = styled.div`
 const AmountContainer = styled.div`
   display: flex;
   align-items: center;
+  font-weight: 700;
 `;
 
 const Amount = styled.span`
   width: 30px;
   height: 30px;
   border-radius: 10px;
-  border: 1px solid lightgray;
+  border: 1px solid teal;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,13 +103,13 @@ const Amount = styled.span`
 
 const Button = styled.button`
   padding: 15px;
-  border: 1px solid lightgray;
+  border: 2px solid teal;
   background-color: white;
   cursor: pointer;
-  border-radius: 10px;
+  font-weight: 500;
 
   &:hover {
-    background-color: teal;
+    background-color: #f8f4f4;
   }
 `;
 
@@ -123,7 +119,7 @@ const Product = () => {
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState("");
-  const [size, setSize] = useState("");
+  // const [size] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -145,19 +141,19 @@ const Product = () => {
   };
 
   const handleClick = () => {
-    dispatch(addProduct({ ...product, quantity, color, size }));
+    dispatch(addProduct({ ...product, quantity, color }));
   };
   return (
     <Container>
       <Navbar />
-      <Announcements />
+      <Announcement />
       <Wrapper>
         <ImgContainer>
           <Image src={product.img} />
         </ImgContainer>
         <InfoContainer>
           <Title>{product.title}</Title>
-          <Description>{product.description}</Description>
+          <Desc>{product.desc}</Desc>
           <Price>$ {product.price}</Price>
           <FilterContainer>
             <Filter>
@@ -165,14 +161,6 @@ const Product = () => {
               {product.color?.map((c) => (
                 <FilterColor color={c} key={c} onClick={() => setColor(c)} />
               ))}
-            </Filter>
-            <Filter>
-              <FilterTitle>Size</FilterTitle>
-              <FilterSize onChange={(e) => setSize(e.target.value)}>
-                {product.size?.map((s) => (
-                  <FilterSizeOption key={s}>{s}</FilterSizeOption>
-                ))}
-              </FilterSize>
             </Filter>
           </FilterContainer>
           <AddContainer>
@@ -190,4 +178,5 @@ const Product = () => {
     </Container>
   );
 };
+
 export default Product;

@@ -1,14 +1,12 @@
 import {
-  AlternateEmail,
   Facebook,
   Instagram,
-  LocalPhone,
-  LocationOn,
+  MailOutline,
+  Phone,
   Pinterest,
+  Room,
 } from "@material-ui/icons";
 import styled from "styled-components";
-import React from "react";
-import paymentImg from "../images/stripePayments.png";
 import { mobile } from "../responsive";
 
 const Container = styled.div`
@@ -24,18 +22,21 @@ const Left = styled.div`
 `;
 
 const Logo = styled.h1``;
-const Description = styled.p`
+
+const Desc = styled.p`
   margin: 20px 0px;
 `;
+
 const SocialContainer = styled.div`
   display: flex;
 `;
+
 const SocialIcon = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
   color: white;
-  background-color: ${(props) => props.color};
+  background-color: #${(props) => props.color};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,7 +50,7 @@ const Center = styled.div`
 `;
 
 const Title = styled.h3`
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 `;
 
 const List = styled.ul`
@@ -68,7 +69,7 @@ const ListItem = styled.li`
 const Right = styled.div`
   flex: 1;
   padding: 20px;
-  ${mobile({ backgroundColor: "#ffffef" })}
+  ${mobile({ backgroundColor: "#fff8f8" })}
 `;
 
 const ContactItem = styled.div`
@@ -78,27 +79,27 @@ const ContactItem = styled.div`
 `;
 
 const Payment = styled.img`
-  width: 40%;
+  width: 50%;
 `;
 
-export const Footer = ({ item }) => {
+const Footer = () => {
   return (
     <Container>
       <Left>
-        <Logo>MOCKED UP.</Logo>
-        <Description>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga maiores
-          amet ipsum fugiat. Quo doloremque soluta nam in quam esse sed animi
-          ipsum! Vel ut, asperiores qui itaque laborum porro.
-        </Description>
+        <Logo>MOCKUP.</Logo>
+        <Desc>
+          There are many variations of passages of Lorem Ipsum available, but
+          the majority have suffered alteration in some form, by injected
+          humour, or randomised words which don’t look even slightly believable.
+        </Desc>
         <SocialContainer>
-          <SocialIcon color="#E4405F">
-            <Instagram />
-          </SocialIcon>
-          <SocialIcon color="#3B5999">
+          <SocialIcon color="3B5999">
             <Facebook />
           </SocialIcon>
-          <SocialIcon color="#E60023">
+          <SocialIcon color="E4405F">
+            <Instagram />
+          </SocialIcon>
+          <SocialIcon color="E60023">
             <Pinterest />
           </SocialIcon>
         </SocialContainer>
@@ -108,27 +109,28 @@ export const Footer = ({ item }) => {
         <List>
           <ListItem>Home</ListItem>
           <ListItem>Cart</ListItem>
-          <ListItem>View All Mockups</ListItem>
+          <ListItem>All Mockups</ListItem>
           <ListItem>My Account</ListItem>
-          <ListItem>View Order Details</ListItem>
           <ListItem>Wishlist</ListItem>
-          <ListItem>Terms and Conitions</ListItem>
+          <ListItem>Terms</ListItem>
         </List>
       </Center>
       <Right>
         <Title>Contact</Title>
         <ContactItem>
-          <LocationOn style={{ marginRight: "10px" }} />
-          123 Fake Street, Faketown, 2000
+          <Room style={{ marginRight: "10px" }} /> 123 Fake Street, Faketown,
+          NSW 2000
         </ContactItem>
         <ContactItem>
-          <LocalPhone style={{ marginRight: "10px" }} /> 0477 211 551
+          <Phone style={{ marginRight: "10px" }} /> 0477 211 551
         </ContactItem>
         <ContactItem>
-          <AlternateEmail style={{ marginRight: "10px" }} /> info@mockedup.com
+          <MailOutline style={{ marginRight: "10px" }} /> info@mockup.com.au
         </ContactItem>
-        <Payment src={paymentImg} />
+        <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
       </Right>
     </Container>
   );
 };
+
+export default Footer;

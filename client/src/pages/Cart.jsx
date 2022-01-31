@@ -1,10 +1,16 @@
-import styled from "styled-components";
-import Announcements from "../components/Announcements";
-import Navbar from "../components/Navbar";
-import { Footer } from "../components/Footer";
-import cartImg from "../images/EventTicketMockup.jpg";
 import { Add, Remove } from "@material-ui/icons";
+import { useSelector } from "react-redux";
+import styled from "styled-components";
+import Announcement from "../components/Announcement";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
+import StripeCheckout from "react-stripe-checkout";
+import { useEffect, useState } from "react";
+import { userRequest } from "../requestMethods";
+import { useHistory } from "react-router";
+
+const KEY = process.env.REACT_APP_STRIPE;
 
 const Container = styled.div``;
 
@@ -14,6 +20,7 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h1`
+  font-weight: 300;
   text-align: center;
 `;
 
@@ -26,17 +33,17 @@ const Top = styled.div`
 
 const TopButton = styled.button`
   padding: 10px;
+  font-weight: 600;
   cursor: pointer;
   border: ${(props) => props.type === "filled" && "none"};
   background-color: ${(props) =>
-    props.type === "filled" ? "Black" : "transparent"};
+    props.type === "filled" ? "black" : "transparent"};
   color: ${(props) => props.type === "filled" && "white"};
 `;
 
 const TopTexts = styled.div`
   ${mobile({ display: "none" })}
 `;
-
 const TopText = styled.span`
   text-decoration: underline;
   cursor: pointer;
@@ -45,7 +52,7 @@ const TopText = styled.span`
 
 const Bottom = styled.div`
   display: flex;
-  justify-content: space-bewteen;
+  justify-content: space-between;
   ${mobile({ flexDirection: "column" })}
 `;
 
@@ -62,14 +69,12 @@ const Product = styled.div`
 const ProductDetail = styled.div`
   flex: 2;
   display: flex;
-  ${mobile({ alignItems: "center" })}
 `;
 
 const Image = styled.img`
   width: 200px;
-  margin-left: 20px;
-  ${mobile({ width: "50%", height: "50%" })}
 `;
+
 const Details = styled.div`
   padding: 20px;
   display: flex;
@@ -77,30 +82,25 @@ const Details = styled.div`
   justify-content: space-around;
 `;
 
-const ProductName = styled.span`
-  ${mobile({ fontSize: "14px", marginBottom: "15px" })}
-`;
-const ProductId = styled.span`
-  ${mobile({ fontSize: "13px", marginBottom: "15px" })}
-`;
+const ProductName = styled.span``;
+
+const ProductId = styled.span``;
 
 const ProductColor = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 50%;
   background-color: ${(props) => props.color};
-  ${mobile({ fontSize: "14px", marginBottom: "15px" })}
-`;
-const ProductSize = styled.span`
-  ${mobile({ fontSize: "14px", marginBottom: "15px" })}
 `;
 
-const PriceDetails = styled.div`
+const ProductSize = styled.span``;
+
+const PriceDetail = styled.div`
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
 `;
 
 const ProductAmountContainer = styled.div`
@@ -110,14 +110,15 @@ const ProductAmountContainer = styled.div`
 `;
 
 const ProductAmount = styled.div`
-  font-size: 20px;
+  font-size: 24px;
   margin: 5px;
-  ${mobile({ margin: "20px 18px" })}
+  ${mobile({ margin: "5px 15px" })}
 `;
 
 const ProductPrice = styled.div`
-  font-size: 25px;
-  ${mobile({ marginBottom: "10px" })}
+  font-size: 30px;
+  font-weight: 200;
+  ${mobile({ marginBottom: "20px" })}
 `;
 
 const Hr = styled.hr`
@@ -132,119 +133,133 @@ const Summary = styled.div`
   border-radius: 10px;
   padding: 20px;
   height: 50vh;
-  margin-right: 15px;
-  ${mobile({ fontSize: "14px", marginRight: "0px", marginTop: "20px" })}
 `;
 
-const SummaryTitle = styled.h1``;
+const SummaryTitle = styled.h1`
+  font-weight: 200;
+`;
 
 const SummaryItem = styled.div`
   margin: 30px 0px;
   display: flex;
   justify-content: space-between;
-  font-weight: ${(props) => props.type === "total" && "bold"};
-  font-size: ${(props) => props.type === "total" && "25px"};
+  font-weight: ${(props) => props.type === "total" && "500"};
+  font-size: ${(props) => props.type === "total" && "24px"};
 `;
 
 const SummaryItemText = styled.span``;
+
 const SummaryItemPrice = styled.span``;
-const SummaryButton = styled.button`
+
+const Button = styled.button`
   width: 100%;
   padding: 10px;
   background-color: black;
   color: white;
+  font-weight: 600;
 `;
 
 const Cart = () => {
+  const cart = useSelector((state) => state.cart);
+  const [stripeToken, setStripeToken] = useState(null);
+  const history = useHistory();
+
+  const onToken = (token) => {
+    setStripeToken(token);
+  };
+
+  useEffect(() => {
+    const makeRequest = async () => {
+      try {
+        const res = await userRequest.post("/checkout/payment", {
+          tokenId: stripeToken.id,
+          amount: 500,
+        });
+        history.push("/success", {
+          stripeData: res.data,
+          products: cart,
+        });
+      } catch {}
+    };
+    stripeToken && makeRequest();
+  }, [stripeToken, cart, history]);
   return (
     <Container>
       <Navbar />
-      <Announcements />
+      <Announcement />
       <Wrapper>
         <Title>YOUR BAG</Title>
         <Top>
-          <TopButton>Continue Shopping</TopButton>
+          <TopButton>CONTINUE SHOPPING</TopButton>
           <TopTexts>
-            <TopText>Shopping Bag (2)</TopText>
+            <TopText>Shopping Bag(2)</TopText>
             <TopText>Your Wishlist (0)</TopText>
           </TopTexts>
-          <TopButton type="field">Checkout Now</TopButton>
+          <TopButton type="filled">CHECKOUT NOW</TopButton>
         </Top>
         <Bottom>
           <Info>
-            <Product>
-              <ProductDetail>
-                <Image src={cartImg} />
-                <Details>
-                  <ProductName>
-                    <b>Product: </b> Event Ticket Mockup
-                  </ProductName>
-                  <ProductId>
-                    <b>ID: </b> ETM001
-                  </ProductId>
-                  <ProductColor color="black" />
-                  <ProductSize>
-                    <b>Type: </b> PSD File
-                  </ProductSize>
-                </Details>
-              </ProductDetail>
-              <PriceDetails>
-                <ProductAmountContainer>
-                  <Add />
-                  <ProductAmount>2</ProductAmount>
-                  <Remove />
-                </ProductAmountContainer>
-                <ProductPrice> $35</ProductPrice>
-              </PriceDetails>
-            </Product>
-            <br />
+            {cart.products.map((product) => (
+              <Product>
+                <ProductDetail>
+                  <Image src={product.img} />
+                  <Details>
+                    <ProductName>
+                      <b>Product:</b> {product.title}
+                    </ProductName>
+                    <ProductId>
+                      <b>ID:</b> {product._id}
+                    </ProductId>
+                    <ProductColor color={product.color} />
+                    <ProductSize>
+                      <b>Size:</b> {product.size}
+                    </ProductSize>
+                  </Details>
+                </ProductDetail>
+                <PriceDetail>
+                  <ProductAmountContainer>
+                    <Add />
+                    <ProductAmount>{product.quantity}</ProductAmount>
+                    <Remove />
+                  </ProductAmountContainer>
+                  <ProductPrice>
+                    $ {product.price * product.quantity}
+                  </ProductPrice>
+                </PriceDetail>
+              </Product>
+            ))}
             <Hr />
-            <br />
-            <Product>
-              <ProductDetail>
-                <Image src={cartImg} />
-                <Details>
-                  <ProductName>
-                    <b>Product: </b> Event Ticket Mockup
-                  </ProductName>
-                  <ProductId>
-                    <b>ID: </b> ETM001
-                  </ProductId>
-                  <ProductColor color="black" />
-                  <ProductSize>
-                    <b>Type: </b> PSD File
-                  </ProductSize>
-                </Details>
-              </ProductDetail>
-              <PriceDetails>
-                <ProductAmountContainer>
-                  <Add />
-                  <ProductAmount>2</ProductAmount>
-                  <Remove />
-                </ProductAmountContainer>
-                <ProductPrice> $35</ProductPrice>
-              </PriceDetails>
-            </Product>
           </Info>
           <Summary>
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$50.00</SummaryItemPrice>
+              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>$0.00</SummaryItemPrice>
+              <SummaryItemPrice>$ 5.90</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>$0.00</SummaryItemPrice>
+              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>$50.00</SummaryItemPrice>
+              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
-            <SummaryButton>CHECKOUT NOW</SummaryButton>
+            <StripeCheckout
+              name="MOCKUP"
+              image="https://image.freepik.com/free-vector/green-hand-drawn-laptop-clipart_53876-115988.jpg"
+              billingAddress
+              shippingAddress
+              description={`Your total is $${cart.total}`}
+              amount={cart.total * 100}
+              token={onToken}
+              stripeKey={KEY}
+            >
+              <Button>CHECKOUT NOW</Button>
+            </StripeCheckout>
           </Summary>
         </Bottom>
       </Wrapper>

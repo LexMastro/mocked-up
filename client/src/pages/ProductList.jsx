@@ -1,11 +1,11 @@
-import Announcements from "../components/Announcements";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
-import Newsletter from "../components/Newsletter";
+import Announcement from "../components/Announcement";
 import Products from "../components/Products";
-import { Footer } from "../components/Footer";
+import Newsletter from "../components/Newsletter";
+import Footer from "../components/Footer";
 import { mobile } from "../responsive";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import { useState } from "react";
 
 const Container = styled.div``;
@@ -18,28 +18,29 @@ const FilterContainer = styled.div`
   display: flex;
   justify-content: space-between;
 `;
+
 const Filter = styled.div`
   margin: 20px;
-  ${mobile({ margin: "0px 20px", display: "flex", flexDirection: "column" })}
+  ${mobile({ width: "0px 20px", display: "flex", flexDirection: "column" })}
 `;
 
 const FilterText = styled.span`
   font-size: 20px;
+  font-weight: 600;
   margin-right: 20px;
   ${mobile({ marginRight: "0px" })}
 `;
 
 const Select = styled.select`
-  padding: 5px;
+  padding: 10px;
   margin-right: 20px;
   ${mobile({ margin: "10px 0px" })}
 `;
-
 const Option = styled.option``;
 
 const ProductList = () => {
   const location = useLocation();
-  const cat = console.log(location.pathname.split("/")[2]);
+  const cat = location.pathname.split("/")[2];
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState("newest");
 
@@ -47,42 +48,33 @@ const ProductList = () => {
     const value = e.target.value;
     setFilters({
       ...filters,
-      [e.target.name]: value.toLowerCase(),
+      [e.target.name]: value,
     });
   };
 
   return (
     <Container>
       <Navbar />
-      <Announcements />
+      <Announcement />
       <Title>{cat}</Title>
       <FilterContainer>
         <Filter>
           <FilterText>Filter Products:</FilterText>
-          <Select name="size" onChnage={handleFilters}>
-            <Option disabled>Categories</Option>
-            <Option>Photos</Option>
-            <Option>Graphics</Option>
-            <Option>Templates</Option>
-            <Option>Fonts</Option>
-          </Select>
-          <Select name="size" onChnage={handleFilters}>
+          <Select name="color" onChange={handleFilters}>
             <Option disabled>File Type</Option>
-            <Option>.PNG</Option>
-            <Option>.JPG</Option>
-            <Option>.EPS</Option>
-            <Option>.SVG</Option>
-            <Option>.AI</Option>
-            <Option>.PSD</Option>
-            <Option>.PDF</Option>
-            <Option>.INDD</Option>
+            <Option>psd</Option>
+            <Option>png</Option>
+            <Option>jpg</Option>
+            <Option>indd</Option>
+            <Option>svg</Option>
+            <Option>eps</Option>
           </Select>
         </Filter>
         <Filter>
           <FilterText>Sort Products:</FilterText>
-          <Select onChnage={(e) => setSort(e.target.value)}>
+          <Select onChange={(e) => setSort(e.target.value)}>
             <Option value="newest">Newest</Option>
-            <Option value="asc"> Price (asc)</Option>
+            <Option value="asc">Price (asc)</Option>
             <Option value="desc">Price (desc)</Option>
           </Select>
         </Filter>
