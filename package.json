@@ -1,0 +1,19 @@
+{
+  "name": "mockup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node index/index.js",
+    "develop": "concurrently \"cd index && npm run watch\" \"cd client && npm start\"",
+    "install": "cd index && npm i && cd ../client && npm i",
+    "seed": "cd index && npm run seed",
+    "build": "cd client && npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^5.1.0"
+  }
+}
