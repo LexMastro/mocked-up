@@ -2,21 +2,26 @@
   "name": "mockup",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node server.js",
+    "watch": "nodemon",
+    "seed": "node config/seeds.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5",
-    "crypto-js": "^4.1.1",
-    "dotenv": "^10.0.0",
+    "apollo-server-express": "^2.25.3",
+    "bcrypt": "^4.0.1",
     "express": "^4.17.1",
+    "graphql": "^15.8.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.0.5",
-    "nodemon": "^2.0.12",
-    "stripe": "^8.174.0"
+    "mongodb": "^4.3.1",
+    "mongoose": "^5.13.14",
+    "stripe": "^8.84.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
   }
 }
