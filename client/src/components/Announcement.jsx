@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { mobile } from "../responsive";
 const Container = styled.div`
   height: 30px;
   background-color: lightblue;
@@ -9,10 +9,16 @@ const Container = styled.div`
   justify-content: center;
   font-size: 14px;
   font-weight: 500;
+  ${mobile({ display: "none" })}
 `;
 
 const Announcement = () => {
-  return <Container>30% off all mockups!</Container>;
+  return (
+    <Container>
+      Discover the latest premium quality mockups graphic mockups, ready for
+      instant download!
+    </Container>
+  );
 };
 
 export default Announcement;

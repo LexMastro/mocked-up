@@ -8,6 +8,7 @@ import {
 } from "@material-ui/icons";
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -107,9 +108,45 @@ const Footer = () => {
       <Center>
         <Title>Useful Links</Title>
         <List>
-          <ListItem>Home</ListItem>
-          <ListItem>Cart</ListItem>
-          <ListItem>All Mockups</ListItem>
+          <ListItem>
+            {" "}
+            <Link
+              style={{
+                textDecoration: "none",
+                color: "black",
+                cursor: "pointer",
+              }}
+              to={"/"}
+            >
+              Home
+            </Link>
+          </ListItem>
+          <ListItem>
+            {" "}
+            <Link
+              style={{
+                textDecoration: "none",
+                color: "black",
+                cursor: "pointer",
+              }}
+              to={"/cart"}
+            >
+              Cart
+            </Link>
+          </ListItem>
+          <ListItem>
+            {" "}
+            <Link
+              style={{
+                textDecoration: "none",
+                color: "black",
+                cursor: "pointer",
+              }}
+              to={"/products/advertising"}
+            >
+              All Mockups
+            </Link>
+          </ListItem>
           <ListItem>My Account</ListItem>
           <ListItem>Wishlist</ListItem>
           <ListItem>Terms</ListItem>

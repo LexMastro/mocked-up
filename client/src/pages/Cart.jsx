@@ -10,7 +10,8 @@ import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { useHistory } from "react-router";
 
-const KEY = process.env.REACT_APP_STRIPE;
+const KEY =
+  "pk_test_51KN59RIYp7PKIOaPeFxD7Smx0vJWi8X6uahMHCvTySIiV9VD1Km16v96f5Lcti0LUoRbQ5q7bzLAHzkv90rEusfR00sxAhOYxa";
 
 const Container = styled.div``;
 
@@ -73,6 +74,7 @@ const ProductDetail = styled.div`
 
 const Image = styled.img`
   width: 200px;
+  ${mobile({ width: "40%", height: "40%", marginTop: "25px;" })}
 `;
 
 const Details = styled.div`
@@ -82,25 +84,25 @@ const Details = styled.div`
   justify-content: space-around;
 `;
 
-const ProductName = styled.span``;
-
-const ProductId = styled.span``;
-
-const ProductColor = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: ${(props) => props.color};
+const ProductName = styled.span`
+  ${mobile({ fontSize: "14px", margin: "5px" })}
 `;
 
-const ProductSize = styled.span``;
+const ProductId = styled.span`
+  ${mobile({ fontSize: "14px", margin: "5px" })}
+`;
+
+const ProductColor = styled.div`
+  ${mobile({ fontSize: "14px", margin: "5px" })}
+`;
 
 const PriceDetail = styled.div`
   flex: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  margin: 0px 20px;
 `;
 
 const ProductAmountContainer = styled.div`
@@ -116,7 +118,7 @@ const ProductAmount = styled.div`
 `;
 
 const ProductPrice = styled.div`
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 200;
   ${mobile({ marginBottom: "20px" })}
 `;
@@ -192,8 +194,8 @@ const Cart = () => {
         <Top>
           <TopButton>CONTINUE SHOPPING</TopButton>
           <TopTexts>
-            <TopText>Shopping Bag(2)</TopText>
-            <TopText>Your Wishlist (0)</TopText>
+            <TopText>Shopping Bag({})</TopText>
+            <TopText>Your Wishlist ()</TopText>
           </TopTexts>
           <TopButton type="filled">CHECKOUT NOW</TopButton>
         </Top>
@@ -210,17 +212,16 @@ const Cart = () => {
                     <ProductId>
                       <b>ID:</b> {product._id}
                     </ProductId>
-                    <ProductColor color={product.color} />
-                    <ProductSize>
-                      <b>Size:</b> {product.size}
-                    </ProductSize>
+                    <ProductColor>
+                      <b>File Type:</b> {product.color}
+                    </ProductColor>
                   </Details>
                 </ProductDetail>
                 <PriceDetail>
                   <ProductAmountContainer>
-                    <Add />
-                    <ProductAmount>{product.quantity}</ProductAmount>
                     <Remove />
+                    <ProductAmount>{product.quantity}</ProductAmount>
+                    <Add />
                   </ProductAmountContainer>
                   <ProductPrice>
                     $ {product.price * product.quantity}
@@ -228,8 +229,8 @@ const Cart = () => {
                 </PriceDetail>
               </Product>
             ))}
-            <Hr />
           </Info>
+          <Hr />
           <Summary>
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
@@ -238,11 +239,11 @@ const Cart = () => {
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>$ 5.90</SummaryItemPrice>
+              <SummaryItemPrice>$ 0.00</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
+              <SummaryItemPrice>$ 0.00</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>

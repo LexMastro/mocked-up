@@ -72,12 +72,19 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const { isFetching, error } = useSelector((state) => state.user);
+  const { isFetching, error } = useSelector((state) => {
+    return state.user;
+  });
+
+  // const userState = useSelector((state) => state.user);
+
+  // console.log({userState});
 
   const handleClick = (e) => {
     e.preventDefault();
     login(dispatch, { username, password });
   };
+
   return (
     <Container>
       <Wrapper>
@@ -92,6 +99,7 @@ const Login = () => {
             type="password"
             onChange={(e) => setPassword(e.target.value)}
           />
+
           <Button onClick={handleClick} disabled={isFetching}>
             LOGIN
           </Button>

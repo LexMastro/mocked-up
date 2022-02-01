@@ -1,5 +1,5 @@
-import { Badge } from "@material-ui/core";
-import { Search, ShoppingCartOutlined } from "@material-ui/icons";
+import { Badge, Button } from "@material-ui/core";
+import { ShoppingCartOutlined } from "@material-ui/icons";
 import React from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
@@ -19,40 +19,41 @@ const Wrapper = styled.div`
   ${mobile({ padding: "10px 0px" })}
 `;
 
-const Left = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-`;
+// const Left = styled.div`
+//   flex: 1;
+//   display: flex;
+//   align-items: center;
+// `;
 
-const SearchContainer = styled.div`
-  border: 0.5px solid lightgray;
-  display: flex;
-  align-items: center;
-  margin-left: 25px;
-  padding: 5px;
-`;
+// const SearchContainer = styled.div`
+//   border: 0.5px solid lightgray;
+//   display: flex;
+//   align-items: center;
+//   margin-left: 25px;
+//   padding: 5px;
+// `;
 
-const Input = styled.input`
-  border: none;
-  ${mobile({ width: "50px" })}
-`;
+// const Input = styled.input`
+//   border: none;
+//   ${mobile({ width: "50px" })}
+// `;
 
 const Center = styled.div`
-  flex: 1;
+  flex: 0;
   text-align: center;
 `;
 
 const Logo = styled.h1`
   font-weight: bold;
-  ${mobile({ fontSize: "24px" })}
+  text-decoration: none;
+  ${mobile({ fontSize: "24px", marginLeft: "10px" })}
 `;
 const Right = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  ${mobile({ flex: 2, justifyContent: "center" })}
+  ${mobile({ flex: 1, justifyContent: "flex-end", marginRight: "15px" })}
 `;
 
 const MenuItem = styled.div`
@@ -64,21 +65,32 @@ const MenuItem = styled.div`
 
 const Navbar = () => {
   const quantity = useSelector((state) => state.cart.quantity);
-  return (
-    <Container>
-      <Wrapper>
-        <Left>
-          <SearchContainer>
-            <Input placeholder="Search" />
-            <Search style={{ color: "gray", fontSize: 16 }} />
-          </SearchContainer>
-        </Left>
-        <Center>
-          <Logo>MOCKUP.</Logo>
-        </Center>
+  const user = useSelector((state) => state.user);
+
+  function logout(event) {
+    // call the logout endpoint on server
+    // localStorage.clear();
+
+    const root = JSON.parse(localStorage.getItem("persist:root"));
+
+    const user = JSON.parse(root.user);
+    user.currentUser = null;
+
+    root.user = JSON.stringify(user);
+    // 2.
+    localStorage.setItem("persist:root", JSON.stringify(root));
+
+    // redirect to home page
+    window.location.href = "/";
+  }
+
+  function renderAuth() {
+    if (user.currentUser !== null) {
+      return (
         <Right>
-          <MenuItem>REGISTER</MenuItem>
-          <MenuItem>SIGN IN</MenuItem>
+          <MenuItem>
+            <Button onClick={logout}>Logout</Button>
+          </MenuItem>
           <Link to="/cart">
             <MenuItem>
               <Badge badgeContent={quantity} color="primary">
@@ -87,6 +99,45 @@ const Navbar = () => {
             </MenuItem>
           </Link>
         </Right>
+      );
+    }
+    return (
+      <Right>
+        <MenuItem>REGISTER</MenuItem>
+        <MenuItem>
+          <Link to="/login">SIGN IN</Link>
+        </MenuItem>
+      </Right>
+    );
+  }
+
+  return (
+    <Container>
+      <Wrapper>
+        {/* <Left>
+          <SearchContainer>
+            <Input placeholder="Search" />
+            <Search>
+              {" "}
+              <SearchBar style={{ color: "gray", fontSize: 16 }} />
+            </Search>
+          </SearchContainer>
+        </Left> */}
+        <Center>
+          <Logo>
+            <Link
+              style={{
+                textDecoration: "none",
+                color: "black",
+                cursor: "pointer",
+              }}
+              to={"/"}
+            >
+              MOCKUP.
+            </Link>
+          </Logo>
+        </Center>
+        {renderAuth()}
       </Wrapper>
     </Container>
   );

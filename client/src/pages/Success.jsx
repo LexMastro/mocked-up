@@ -41,7 +41,7 @@ const Success = () => {
     >
       {orderId
         ? `Order has been created successfully. Your order number is ${orderId}`
-        : `Successfull. Your order is being prepared...`}
+        : `Successfull. Your order is being prepared...& will be emailed to you!`}
       <button style={{ padding: 10, marginTop: 20 }}>Go to Homepage</button>
     </div>
   );

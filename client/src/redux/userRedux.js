@@ -8,6 +8,10 @@ const userSlice = createSlice({
     error: false,
   },
   reducers: {
+    // registerStart(state){
+
+    // },
+
     loginStart: (state) => {
       state.isFetching = true;
     },
@@ -16,8 +20,9 @@ const userSlice = createSlice({
       state.currentUser = action.payload;
     },
     loginFailure: (state) => {
+      console.log("faileddd");
       state.isFetching = false;
-      state.error = true;
+      // state.error = true;
     },
   },
 });
