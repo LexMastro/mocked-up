@@ -50,7 +50,7 @@ const Icon = styled.div`
   border-radius: 50%;
   background-color: white;
   display: flex;
-  align-items: center;
+  align-productss: center;
   justify-content: center;
   margin: 10px;
   transition: all 0.5s ease;
@@ -60,16 +60,16 @@ const Icon = styled.div`
   }
 `;
 
-const Product = ({ item }) => {
+const Product = ({ products }) => {
   return (
     <Container>
-      <Image src={item.img} />
+      <Image src={products.img} />
       <Info>
         <Icon>
           <ShoppingCartOutlined />
         </Icon>
         <Icon>
-          <Link to={`/product/${item._id}`}>
+          <Link to={`/product/${products._id}`}>
             <SearchOutlined />
           </Link>
         </Icon>

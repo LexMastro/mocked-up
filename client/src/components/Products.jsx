@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Product from "./Product";
-import axios from "axios";
+// import axios from "axios";
 
 const Container = styled.div`
   padding: 20px;
@@ -11,22 +11,22 @@ const Container = styled.div`
 `;
 
 const Products = ({ cat, filters, sort }) => {
-  const [products, setProducts] = useState([]);
+  const [products] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const res = await axios.get(
-          cat
-            ? `http://localhost:5000/server/products?category=${cat}`
-            : "http://localhost:5000/server/products"
-        );
-        setProducts(res.data);
-      } catch (err) {}
-    };
-    getProducts();
-  }, [cat]);
+  // useEffect(() => {
+  //   const getProducts = async () => {
+  //     try {
+  //       const res = await axios.get(
+  //         cat
+  //           ? `http://localhost:3001/graphql/products?category=${cat}`
+  //           : "http://localhost:3001/graphql/products"
+  //       );
+  //       setProducts(res.data);
+  //     } catch (err) {}
+  //   };
+  //   getProducts();
+  // }, [cat]);
 
   useEffect(() => {
     cat &&

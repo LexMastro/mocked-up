@@ -8,7 +8,7 @@ export const QUERY_PRODUCTS = gql`
       desc
       price
       quantity
-      image
+      img
       category {
         _id
       }
@@ -61,7 +61,7 @@ export const QUERY_USER = gql`
           desc
           price
           quantity
-          image
+          img
         }
       }
     }

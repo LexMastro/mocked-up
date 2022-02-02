@@ -103,7 +103,9 @@ const Navbar = () => {
     }
     return (
       <Right>
-        <MenuItem>REGISTER</MenuItem>
+        <Link to="/signup">
+          <MenuItem>REGISTER</MenuItem>
+        </Link>
         <MenuItem>
           <Link to="/login">SIGN IN</Link>
         </MenuItem>

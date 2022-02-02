@@ -6,12 +6,7 @@ import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import { mobile } from "../responsive";
 import { useLocation } from "react-router";
-import { useEffect, useState } from "react";
-import { UPDATE_PRODUCTS } from "../utils/actions";
-import { useQuery } from "@apollo/client";
-import { QUERY_PRODUCTS } from "../utils/queries";
-import { idbPromise } from "../utils/helpers";
-import { useStoreContext } from "../utils/GlobalState";
+import { useState } from "react";
 
 const Container = styled.div``;
 
@@ -48,11 +43,6 @@ const ProductList = () => {
   const cat = location.pathname.split("/")[2];
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState("newest");
-  const [state, dispatch] = useStoreContext();
-
-  const { currentCategory } = state;
-
-  const { loading, data } = useQuery(QUERY_PRODUCTS);
 
   const handleFilters = (e) => {
     const value = e.target.value;
@@ -62,34 +52,7 @@ const ProductList = () => {
     });
   };
 
-  useEffect(() => {
-    if (data) {
-      dispatch({
-        type: UPDATE_PRODUCTS,
-        products: data.products,
-      });
-      data.products.forEach((product) => {
-        idbPromise("products", "put", product);
-      });
-    } else if (!loading) {
-      idbPromise("products", "get").then((products) => {
-        dispatch({
-          type: UPDATE_PRODUCTS,
-          products: products,
-        });
-      });
-    }
-  }, [data, loading, dispatch]);
-
-  function filterProducts() {
-    if (!currentCategory) {
-      return state.products;
-    }
-
-    return state.products.filter(
-      (product) => product.category._id === currentCategory
-    );
-  }
+  
 
   return (
     <Container>
@@ -118,15 +81,7 @@ const ProductList = () => {
           </Select>
         </Filter>
       </FilterContainer>
-      {filterProducts().map((product) => (
-        <Products
-          cat={cat}
-          filters={filters}
-          sort={sort}
-          _id={product._id}
-          image={product.img}
-        />
-      ))}
+      <Products cat={cat} filters={filters} sort={sort} />
       <Newsletter />
       <Footer />
     </Container>

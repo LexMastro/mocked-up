@@ -5,9 +5,9 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
 import { mobile } from "../responsive";
-import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { publicRequest } from "../requestMethods";
+// import { useLocation } from "react-router-dom";
+import { useState } from "react";
+// import { publicRequest } from "../requestMethods";
 import { addProduct } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
 
@@ -114,23 +114,23 @@ const Button = styled.button`
 `;
 
 const Product = () => {
-  const location = useLocation();
-  const id = location.pathname.split("/")[2];
-  const [product, setProduct] = useState({});
+  // const location = useLocation();
+  // const id = location.pathname.split("/")[2];
+  const [product] = useState({});
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState("");
   // const [size] = useState("");
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const getProduct = async () => {
-      try {
-        const res = await publicRequest.get("/products/find/" + id);
-        setProduct(res.data);
-      } catch {}
-    };
-    getProduct();
-  }, [id]);
+  // useEffect(() => {
+  //   const getProduct = async () => {
+  //     try {
+  //       const res = await publicRequest.get("/products/find/" + id);
+  //       setProduct(res.data);
+  //     } catch {}
+  //   };
+  //   getProduct();
+  // }, [id]);
 
   const handleQuantity = (type) => {
     if (type === "dec") {
