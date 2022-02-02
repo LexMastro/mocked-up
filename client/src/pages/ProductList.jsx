@@ -6,11 +6,12 @@ import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import { mobile } from "../responsive";
 import { useLocation } from "react-router";
-import { useState } from "react";
-import { UPDATE_PRODUCTS } from "../../utils/actions";
+import { useEffect, useState } from "react";
+import { UPDATE_PRODUCTS } from "../utils/actions";
 import { useQuery } from "@apollo/client";
-import { QUERY_PRODUCTS } from "../../utils/queries";
-import { idbPromise } from "../../utils/helpers";
+import { QUERY_PRODUCTS } from "../utils/queries";
+import { idbPromise } from "../utils/helpers";
+import { useStoreContext } from "../utils/GlobalState";
 
 const Container = styled.div``;
 
@@ -117,7 +118,15 @@ const ProductList = () => {
           </Select>
         </Filter>
       </FilterContainer>
-      <Products cat={cat} filters={filters} sort={sort} />
+      {filterProducts().map((product) => (
+        <Products
+          cat={cat}
+          filters={filters}
+          sort={sort}
+          _id={product._id}
+          image={product.img}
+        />
+      ))}
       <Newsletter />
       <Footer />
     </Container>
