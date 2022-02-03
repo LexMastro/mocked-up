@@ -60,16 +60,16 @@ const Icon = styled.div`
   }
 `;
 
-const Product = ({ products }) => {
+const Product = ({ product }) => {
   return (
     <Container>
-      <Image src={products.img} />
+      <Image src={product.img} />
       <Info>
         <Icon>
           <ShoppingCartOutlined />
         </Icon>
         <Icon>
-          <Link to={`/product/${products._id}`}>
+          <Link to={`/product/${product._id}`}>
             <SearchOutlined />
           </Link>
         </Icon>

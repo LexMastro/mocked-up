@@ -6,11 +6,13 @@ export const QUERY_PRODUCTS = gql`
       _id
       title
       desc
+      color
       price
       quantity
       img
       category {
         _id
+        name
       }
     }
   }
@@ -30,9 +32,11 @@ export const QUERY_ALL_PRODUCTS = gql`
       _id
       title
       desc
+      color
       price
       quantity
       category {
+        _id
         name
       }
     }

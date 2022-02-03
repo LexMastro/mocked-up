@@ -20,7 +20,7 @@ db.once("open", async () => {
       desc: "PSD mockup of magazine layout",
       img: "https://image.freepik.com/free-psd/magazine-mockup_165789-367.jpg",
       category: categories[0]._id,
-      color: "psd",
+      color: ["psd", 'jpg'],
       price: 25.0,
       quantity: 500,
     },

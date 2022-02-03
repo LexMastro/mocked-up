@@ -41,7 +41,11 @@ const Option = styled.option``;
 const ProductList = () => {
   const location = useLocation();
   const cat = location.pathname.split("/")[2];
-  const [filters, setFilters] = useState({});
+
+  const colors = ["psd", "png", "jpg", "indd", "svg", "eps"];
+  const [filters, setFilters] = useState({
+    color: colors[0],
+  });
   const [sort, setSort] = useState("newest");
 
   const handleFilters = (e) => {
@@ -52,7 +56,14 @@ const ProductList = () => {
     });
   };
 
-  
+  const handleSort = (e) => {
+    const value = e.target.value;
+    setSort(e.target.value);
+    setFilters({
+      ...filters,
+      [e.target.name]: value,
+    });
+  };
 
   return (
     <Container>
@@ -64,17 +75,16 @@ const ProductList = () => {
           <FilterText>Filter Products:</FilterText>
           <Select name="color" onChange={handleFilters}>
             <Option disabled>File Type</Option>
-            <Option>psd</Option>
-            <Option>png</Option>
-            <Option>jpg</Option>
-            <Option>indd</Option>
-            <Option>svg</Option>
-            <Option>eps</Option>
+            {colors.map((color) => (
+              <>
+                <Option key={color}>{color}</Option>
+              </>
+            ))}
           </Select>
         </Filter>
         <Filter>
           <FilterText>Sort Products:</FilterText>
-          <Select onChange={(e) => setSort(e.target.value)}>
+          <Select onChange={handleSort}>
             <Option value="newest">Newest</Option>
             <Option value="asc">Price (asc)</Option>
             <Option value="desc">Price (desc)</Option>

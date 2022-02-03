@@ -5,11 +5,14 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
 import { mobile } from "../responsive";
-// import { useLocation } from "react-router-dom";
 import { useState } from "react";
-// import { publicRequest } from "../requestMethods";
 import { addProduct } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
+import { pluralize } from "../utils/helpers"
+import { useStoreContext } from "../utils/GlobalState";
+import { ADD_TO_CART, UPDATE_CART_QUANTITY } from "../utils/actions";
+import { idbPromise } from "../utils/helpers";
+
 
 const Container = styled.div``;
 
@@ -114,23 +117,14 @@ const Button = styled.button`
 `;
 
 const Product = () => {
-  // const location = useLocation();
-  // const id = location.pathname.split("/")[2];
   const [product] = useState({});
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState("");
-  // const [size] = useState("");
+
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const getProduct = async () => {
-  //     try {
-  //       const res = await publicRequest.get("/products/find/" + id);
-  //       setProduct(res.data);
-  //     } catch {}
-  //   };
-  //   getProduct();
-  // }, [id]);
+  
+
 
   const handleQuantity = (type) => {
     if (type === "dec") {
@@ -177,6 +171,6 @@ const Product = () => {
       <Footer />
     </Container>
   );
-};
+}
 
 export default Product;

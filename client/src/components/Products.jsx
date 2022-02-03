@@ -1,7 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import Product from "./Product";
 // import axios from "axios";
+import { QUERY_PRODUCTS } from "../utils/queries";
+import { useQuery } from "@apollo/client";
+import { idbPromise } from "../utils/helpers";
+import { useStoreContext } from "../utils/GlobalState";
+import { UPDATE_PRODUCTS } from "../utils/actions";
 
 const Container = styled.div`
   padding: 20px;
@@ -10,58 +15,78 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 
-const Products = ({ cat, filters, sort }) => {
-  const [products] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
+const Products = (props) => {
+  const [state, dispatch] = useStoreContext();
 
-  // useEffect(() => {
-  //   const getProducts = async () => {
-  //     try {
-  //       const res = await axios.get(
-  //         cat
-  //           ? `http://localhost:3001/graphql/products?category=${cat}`
-  //           : "http://localhost:3001/graphql/products"
-  //       );
-  //       setProducts(res.data);
-  //     } catch (err) {}
-  //   };
-  //   getProducts();
-  // }, [cat]);
+  const { loading, data } = useQuery(QUERY_PRODUCTS);
 
   useEffect(() => {
-    cat &&
-      setFilteredProducts(
-        products.filter((item) =>
-          Object.entries(filters).every(([key, value]) =>
-            item[key].includes(value)
-          )
-        )
-      );
-  }, [products, cat, filters]);
-
-  useEffect(() => {
-    if (sort === "newest") {
-      setFilteredProducts((prev) =>
-        [...prev].sort((a, b) => a.createdAt - b.createdAt)
-      );
-    } else if (sort === "asc") {
-      setFilteredProducts((prev) =>
-        [...prev].sort((a, b) => a.price - b.price)
-      );
-    } else {
-      setFilteredProducts((prev) =>
-        [...prev].sort((a, b) => b.price - a.price)
-      );
+    if (data) {
+      dispatch({
+        type: UPDATE_PRODUCTS,
+        products: data.products,
+      });
+      data.products.forEach((product) => {
+        idbPromise("products", "put", product);
+      });
+    } else if (!loading) {
+      idbPromise("products", "get").then((products) => {
+        dispatch({
+          type: UPDATE_PRODUCTS,
+          products: products,
+        });
+      });
     }
-  }, [sort]);
+  }, [data, loading, dispatch]);
+
+  function filterProducts() {
+    if (!props.cat) {
+      return state.products;
+    }
+
+    // filter by cat, color
+
+    const targetFilterColor = props.filters.color; // string
+
+    // filter all the products that contain the targetFilterCOlor
+
+    // sort
+    let results = state.products.filter((product) => {
+      const sameCategory = product.category.name === props.cat;
+      console.log({ targetFilterColor });
+      const sameColor = product.color.includes(targetFilterColor);
+
+      console.log(product);
+      console.log({ sameCategory });
+      console.log({ sameColor });
+      return sameCategory && sameColor;
+    });
+
+    // sort
+
+    // check whick mode
+
+    // 'newest', 'asc', 'desc', undefined
+
+    if (props.sort === "newest") {
+      results = state.products.sort((a, b) => a.createdAt - b.createdAt);
+    } else if (props.sort === "asc") {
+      results = state.products.sort((a, b) => a.price - b.price);
+    } else {
+      results = state.products.sort((a, b) => b.price - a.price);
+    }
+    return results;
+  }
 
   return (
-    <Container>
-      {cat
-        ? filteredProducts.map((item) => <Product item={item} key={item.id} />)
-        : products
-            .slice(0, 10)
-            .map((item) => <Product item={item} key={item.id} />)}
+    <Container className="my-2">
+      <>
+        {filterProducts()
+          .slice(0, 10)
+          .map((product) => (
+            <Product key={product._id} product={product} />
+          ))}
+      </>
     </Container>
   );
 };
