@@ -1,21 +1,21 @@
 export const sliderItems = [
   {
     id: 1,
-    img: "https://www.mockupworld.co/wp-content/uploads/dynamic/2021/12/free-cosmetic-bottle-with-box-mockup-psd-1072x0-c-default.jpg",
+    img: "https://www.graphicpear.com/wp-content/uploads/2021/12/Labeled-Juice-Bottle-Mockup-2.jpg",
     title: "PACKAGING MOCKUPS",
     desc: "Add your own branding to boxes, bottles, bags and business essentials!",
     bg: "ffffff",
   },
   {
     id: 2,
-    img: "https://www.mockupworld.co/wp-content/uploads/dynamic/2019/10/free-hanging-poster-with-shadows-mockup-psd-1072x0-c-default.jpg",
+    img: "https://mockups-design.com/wp-content/uploads/2021/12/Business_Card_Mockup_1.jpg",
     title: "ADVERTISING MOCKUPS",
     desc: "Add your own branding to street signs, posters, billbaords and magazines!",
     bg: "ffffff",
   },
   {
     id: 3,
-    img: "https://www.mockupworld.co/wp-content/uploads/dynamic/2022/01/free-iphone-13-isometric-mockup-psd-1072x0-c-default.jpg",
+    img: "https://www.graphicpear.com/wp-content/uploads/2019/10/Responsive-Mockup-Scene-01.jpg",
     title: "DIGITAL MOCKUPS",
     desc: "Add your own branding to digital devices and social pages",
     bg: "ffffff",

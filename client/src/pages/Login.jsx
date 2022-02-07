@@ -1,8 +1,16 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { login } from "../redux/apiCalls";
+// import { login } from "../redux/apiCalls";
 import { mobile } from "../responsive";
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
+import { LOGIN } from "../utils/mutations";
+import Auth from "../utils/auth";
+import { useMutation } from "@apollo/client";
+
+// import { useMutation } from "@apollo/client";
+// import { Link } from "react-router-dom";
+// import { LOGIN } from "../utils/mutations";
+// import Auth from "../utils/auth";
 
 const Container = styled.div`
   width: 100vw;
@@ -57,7 +65,7 @@ const Button = styled.button`
   }
 `;
 
-const Link = styled.a`
+const LinkText = styled.a`
   margin: 5px 0px;
   font-size: 12px;
   text-decoration: underline;
@@ -68,44 +76,64 @@ const Error = styled.span`
   color: red;
 `;
 
-const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const dispatch = useDispatch();
-  const { isFetching, error } = useSelector((state) => {
-    return state.user;
-  });
+const Login = (props) => {
+  // const [username, setUsername] = useState("");
+  // const [password, setPassword] = useState("");
+  // const dispatch = useDispatch();
+  // const { isFetching } = useSelector((state) => {
+  //   return state.user;
+  // });
 
-  // const userState = useSelector((state) => state.user);
+  // // const userState = useSelector((state) => state.user);
 
-  // console.log({ userState });
+  // // console.log({ userState });
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    login(dispatch, { username, password });
+  // const handleClick = (e) => {
+  //   e.preventDefault();
+  //   login(dispatch, { username, password });
+  // };
+
+  const [formState, setFormState] = useState({ email: "", password: "" });
+  const [login, { error }] = useMutation(LOGIN);
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const mutationResponse = await login({
+        variables: { email: formState.email, password: formState.password },
+      });
+      const token = mutationResponse.data.login.token;
+      Auth.login(token);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
   };
 
   return (
     <Container>
       <Wrapper>
         <Title>SIGN IN</Title>
-        <Form>
+        <Form onSubmit={handleFormSubmit}>
+          <Input name="email" placeholder="email" onChange={handleChange} />
           <Input
-            placeholder="username"
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <Input
+            name="password"
             placeholder="password"
             type="password"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handleChange}
           />
 
-          <Button onClick={handleClick} disabled={isFetching}>
-            LOGIN
-          </Button>
+          <Button type="submit">LOGIN</Button>
           {error && <Error>Something went wrong...</Error>}
-          <Link>FORGOT YOUR PASSWORD?</Link>
-          <Link>CREATE A NEW ACCOUNT</Link>
+          <LinkText>FORGOT YOUR PASSWORD?</LinkText>
+          <LinkText>CREATE A NEW ACCOUNT</LinkText>
         </Form>
       </Wrapper>
     </Container>

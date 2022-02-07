@@ -7,8 +7,13 @@ import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
 import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
-import { userRequest } from "../requestMethods";
-import { useHistory } from "react-router";
+// import { useHistory } from "react-router";
+import { QUERY_CHECKOUT } from "../utils/queries";
+import { ADD_MULTIPLE_TO_CART } from "../utils/actions";
+import { useStoreContext } from "../utils/GlobalState";
+import { Link } from "react-router-dom";
+import { useLazyQuery } from "@apollo/client";
+import { idbPromise } from "../utils/helpers";
 
 const KEY =
   "pk_test_51KN59RIYp7PKIOaPeFxD7Smx0vJWi8X6uahMHCvTySIiV9VD1Km16v96f5Lcti0LUoRbQ5q7bzLAHzkv90rEusfR00sxAhOYxa";
@@ -163,28 +168,82 @@ const Button = styled.button`
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
-  const [stripeToken, setStripeToken] = useState(null);
-  const history = useHistory();
+  const [setStripeToken] = useState(null);
+  // const history = useHistory();
+  const [state, dispatch] = useStoreContext();
+  const [getCheckout, { data }] = useLazyQuery(QUERY_CHECKOUT);
 
   const onToken = (token) => {
     setStripeToken(token);
   };
 
   useEffect(() => {
-    const makeRequest = async () => {
-      try {
-        const res = await userRequest.post("/checkout/payment", {
-          tokenId: stripeToken.id,
-          amount: 500,
-        });
-        history.push("/success", {
-          stripeData: res.data,
-          products: cart,
-        });
-      } catch {}
-    };
-    stripeToken && makeRequest();
-  }, [stripeToken, cart, history]);
+    if (data) {
+      KEY.then((res) => {
+        res.redirectToCheckout({ sessionId: data.checkout.session });
+      });
+    }
+  }, [data]);
+
+  useEffect(() => {
+    async function getCart() {
+      const cart = await idbPromise("cart", "get");
+      dispatch({ type: ADD_MULTIPLE_TO_CART, products: [...cart] });
+    }
+
+    if (!state.cart.length) {
+      getCart();
+    }
+  }, [state.cart.length, dispatch]);
+
+  function calculateTotal() {
+    let sum = 0;
+    state.cart.forEach((product) => {
+      sum += product.price * product.purchaseQuantity;
+    });
+    return sum.toFixed(2);
+  }
+
+  function submitCheckout() {
+    const productIds = [];
+
+    state.cart.forEach((product) => {
+      for (let i = 0; i < product.quantity; i++) {
+        productIds.push(product._id);
+      }
+    });
+
+    getCheckout({
+      variables: { products: productIds },
+    });
+  }
+  // useEffect(() => {
+  //   const makeRequest = async () => {
+  //     try {
+  //       const res = await userRequest.post("/checkout/payment", {
+  //         tokenId: stripeToken.id,
+  //         amount: 500,
+  //       });
+  //       history.push("/success", {
+  //         stripeData: res.data,
+  //         products: cart,
+  //       });
+  //     } catch {}
+  //   };
+  //   stripeToken && makeRequest();
+  // }, [stripeToken, cart, history]);
+
+  const [quantity, setQuantity] = useState(1);
+  // const product = data?.product;
+  const handleQuantity = (type) => {
+    if (type === "dec") {
+      quantity > 1 && setQuantity(quantity - 1);
+    } else {
+      setQuantity(quantity + 1);
+    }
+  };
+  console.log(state.cart);
+
   return (
     <Container>
       <Navbar />
@@ -192,16 +251,18 @@ const Cart = () => {
       <Wrapper>
         <Title>YOUR BAG</Title>
         <Top>
-          <TopButton>CONTINUE SHOPPING</TopButton>
+          <TopButton onClick={submitCheckout}>CONTINUE SHOPPING</TopButton>
           <TopTexts>
             <TopText>Shopping Bag({})</TopText>
             <TopText>Your Wishlist ()</TopText>
           </TopTexts>
-          <TopButton type="filled">CHECKOUT NOW</TopButton>
+          <Link to="">
+            <TopButton type="filled">CHECKOUT NOW</TopButton>
+          </Link>
         </Top>
         <Bottom>
           <Info>
-            {cart.products.map((product) => (
+            {state.cart.map((product) => (
               <Product>
                 <ProductDetail>
                   <Image src={product.img} />
@@ -219,12 +280,12 @@ const Cart = () => {
                 </ProductDetail>
                 <PriceDetail>
                   <ProductAmountContainer>
-                    <Remove />
-                    <ProductAmount>{product.quantity}</ProductAmount>
-                    <Add />
+                    <Remove onClick={() => handleQuantity("dec")} />
+                    <ProductAmount>{product.purchaseQuantity}</ProductAmount>
+                    <Add onClick={() => handleQuantity("inc")} />
                   </ProductAmountContainer>
                   <ProductPrice>
-                    $ {product.price * product.quantity}
+                    ${product.price * product.purchaseQuantity}
                   </ProductPrice>
                 </PriceDetail>
               </Product>
@@ -237,29 +298,21 @@ const Cart = () => {
               <SummaryItemText>Subtotal</SummaryItemText>
               <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>$ 0.00</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>$ 0.00</SummaryItemPrice>
-            </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>${calculateTotal()}</SummaryItemPrice>
             </SummaryItem>
             <StripeCheckout
               name="MOCKUP"
               image="https://image.freepik.com/free-vector/green-hand-drawn-laptop-clipart_53876-115988.jpg"
               billingAddress
               shippingAddress
-              description={`Your total is $${cart.total}`}
-              amount={cart.total * 100}
+              description={`Your total is $${calculateTotal()}`}
+              amount={`${calculateTotal()}` * 100}
               token={onToken}
               stripeKey={KEY}
             >
-              <Button>CHECKOUT NOW</Button>
+              <Button onClick={submitCheckout}>CHECKOUT NOW</Button>
             </StripeCheckout>
           </Summary>
         </Bottom>

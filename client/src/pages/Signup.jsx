@@ -45,12 +45,14 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  width: 40%;
+  width: 98%;
   border: none;
   padding: 15px 20px;
   background-color: teal;
   color: white;
   cursor: pointer;
+  margin-top: 20px;
+
 `;
 
 function Signup(props) {

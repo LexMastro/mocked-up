@@ -130,8 +130,13 @@ const resolvers = {
       );
     },
     login: async (parent, { email, password }) => {
+
+      console.log(await User.find({}));
       const user = await User.findOne({ email });
 
+      console.log(user);
+      console.log(password);
+      console.log(email);
       if (!user) {
         throw new AuthenticationError("Incorrect credentials");
       }
@@ -139,6 +144,7 @@ const resolvers = {
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
+
         throw new AuthenticationError("Incorrect credentials");
       }
 

@@ -65,7 +65,11 @@ const MenuItem = styled.div`
 
 const Navbar = () => {
   const quantity = useSelector((state) => state.cart.quantity);
-  const user = useSelector((state) => state.user);
+
+  
+  const isLoggedIn = localStorage.getItem('id_token');
+
+  // const user = useSelector((state) => state.user);
 
   function logout(event) {
     // call the logout endpoint on server
@@ -85,7 +89,7 @@ const Navbar = () => {
   }
 
   function renderAuth() {
-    if (user.currentUser !== null) {
+    if (isLoggedIn) {
       return (
         <Right>
           <MenuItem>
@@ -116,15 +120,6 @@ const Navbar = () => {
   return (
     <Container>
       <Wrapper>
-        {/* <Left>
-          <SearchContainer>
-            <Input placeholder="Search" />
-            <Search>
-              {" "}
-              <SearchBar style={{ color: "gray", fontSize: 16 }} />
-            </Search>
-          </SearchContainer>
-        </Left> */}
         <Center>
           <Logo>
             <Link

@@ -4,14 +4,9 @@ import ProductList from "./pages/ProductList";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Cart from "./pages/Cart";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Success from "./pages/Success";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import {
   ApolloProvider,
   createHttpLink,
@@ -41,7 +36,7 @@ const client = new ApolloClient({
 });
 
 const App = () => {
-  const user = useSelector((state) => state.user.currentUser);
+  // const user = useSelector((state) => state.user.currentUser);
   return (
     <ApolloProvider client={client}>
       <Router>
@@ -62,12 +57,8 @@ const App = () => {
             <Route path="/success">
               <Success />
             </Route>
-            <Route path="/login">
-              {user ? <Redirect to="/" /> : <Login />}
-            </Route>
-            <Route path="/signup">
-              {user ? <Redirect to="/" /> : <Signup />}
-            </Route>
+            <Route exact path="/login" component={Login}></Route>
+            <Route exact path="/signup" component={Signup}></Route>
           </Switch>
         </StoreProvider>
       </Router>

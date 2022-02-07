@@ -18,6 +18,18 @@ export const QUERY_PRODUCTS = gql`
   }
 `;
 
+export const QUERY_PRODUCT = gql`
+  query getProduct($id: ID!) {
+    product(_id: $id) {
+      title
+      img
+      desc
+      color
+      price
+    }
+  }
+`;
+
 export const QUERY_CHECKOUT = gql`
   query getCheckout($products: [ID]!) {
     checkout(products: $products) {
@@ -55,7 +67,8 @@ export const QUERY_CATEGORIES = gql`
 export const QUERY_USER = gql`
   {
     user {
-      username
+      firstName
+      lastName
       orders {
         _id
         purchaseDate
@@ -63,6 +76,7 @@ export const QUERY_USER = gql`
           _id
           title
           desc
+          color
           price
           quantity
           img
