@@ -82,7 +82,7 @@ const Navbar = () => {
               to="/cart"
               style={{
                 textDecoration: "none",
-                color: "red",
+                color: "black",
                 cursor: "pointer",
               }}
             >
@@ -96,11 +96,27 @@ const Navbar = () => {
     }
     return (
       <Right>
-        <Link to="/signup">
+        <Link
+          style={{
+            textDecoration: "none",
+            color: "black",
+            cursor: "pointer",
+          }}
+          to="/signup"
+        >
           <MenuItem>REGISTER</MenuItem>
         </Link>
         <MenuItem>
-          <Link to="/login">SIGN IN</Link>
+          <Link
+            style={{
+              textDecoration: "none",
+              color: "black",
+              cursor: "pointer",
+            }}
+            to="/login"
+          >
+            SIGN IN
+          </Link>
         </MenuItem>
       </Right>
     );
