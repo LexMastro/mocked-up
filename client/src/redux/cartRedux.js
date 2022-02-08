@@ -4,14 +4,33 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: {
     products: [],
-    quantity: 0,
-    total: 0,
   },
   reducers: {
     addProduct: (state, action) => {
-      state.quantity += 1;
-      state.products.push(action.payload);
-      state.total += action.payload.price * action.payload.quantity;
+      // check if product is in cart first
+      const existingIndex = state.products.findIndex(
+        (product) => product.title === action.payload.title
+      );
+      if (existingIndex === -1) {
+        state.products.push(action.payload);
+      } else {
+        const oldProduct = state.products[existingIndex];
+        state.products[existingIndex] = {
+          ...oldProduct,
+          quantity: oldProduct.quantity + 1,
+        };
+      }
+    },
+    removeProduct: (state, action) => {
+      // check if product is in cart first
+      const existingIndex = state.products.findIndex(
+        (product) => product.title === action.payload.title
+      );
+      if (existingIndex === -1) {
+        return state;
+      } else {
+        state.products.splice(existingIndex, 1);
+      }
     },
   },
 });

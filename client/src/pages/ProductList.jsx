@@ -75,8 +75,10 @@ const ProductList = () => {
           <FilterText>Filter Products:</FilterText>
           <Select name="color" onChange={handleFilters}>
             <Option disabled>File Type</Option>
+            console.log(color)
             {colors.map((color) => (
               <>
+              
                 <Option key={color}>{color}</Option>
               </>
             ))}

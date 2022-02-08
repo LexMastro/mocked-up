@@ -56,6 +56,7 @@ const Products = (props) => {
       console.log({ targetFilterColor });
       const sameColor = product.color.includes(targetFilterColor);
 
+      console.log("hello wrld");
       console.log(product);
       console.log({ sameCategory });
       console.log({ sameColor });

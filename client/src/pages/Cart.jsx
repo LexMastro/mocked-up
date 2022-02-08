@@ -97,7 +97,7 @@ const ProductId = styled.span`
   ${mobile({ fontSize: "14px", margin: "5px" })}
 `;
 
-const ProductColor = styled.div`
+const ProductColor = styled.span`
   ${mobile({ fontSize: "14px", margin: "5px" })}
 `;
 
@@ -191,15 +191,15 @@ const Cart = () => {
       dispatch({ type: ADD_MULTIPLE_TO_CART, products: [...cart] });
     }
 
-    if (!state.cart.length) {
+    if (!cart.products.length) {
       getCart();
     }
-  }, [state.cart.length, dispatch]);
+  }, [cart.products.length, dispatch]);
 
   function calculateTotal() {
     let sum = 0;
-    state.cart.forEach((product) => {
-      sum += product.price * product.purchaseQuantity;
+    cart.products.forEach((product) => {
+      sum += product.price * product.quantity;
     });
     return sum.toFixed(2);
   }
@@ -242,7 +242,7 @@ const Cart = () => {
       setQuantity(quantity + 1);
     }
   };
-  console.log(state.cart);
+  console.log(cart);
 
   return (
     <Container>
@@ -253,7 +253,7 @@ const Cart = () => {
         <Top>
           <TopButton onClick={submitCheckout}>CONTINUE SHOPPING</TopButton>
           <TopTexts>
-            <TopText>Shopping Bag({})</TopText>
+            <TopText>Shopping Bag({cart.products.length})</TopText>
             <TopText>Your Wishlist ()</TopText>
           </TopTexts>
           <Link to="">
@@ -262,7 +262,7 @@ const Cart = () => {
         </Top>
         <Bottom>
           <Info>
-            {state.cart.map((product) => (
+            {cart.products.map((product) => (
               <Product>
                 <ProductDetail>
                   <Image src={product.img} />
@@ -281,11 +281,11 @@ const Cart = () => {
                 <PriceDetail>
                   <ProductAmountContainer>
                     <Remove onClick={() => handleQuantity("dec")} />
-                    <ProductAmount>{product.purchaseQuantity}</ProductAmount>
+                    <ProductAmount>{product.quantity}</ProductAmount>
                     <Add onClick={() => handleQuantity("inc")} />
                   </ProductAmountContainer>
                   <ProductPrice>
-                    ${product.price * product.purchaseQuantity}
+                    ${product.price * product.quantity}
                   </ProductPrice>
                 </PriceDetail>
               </Product>
@@ -295,8 +295,8 @@ const Cart = () => {
           <Summary>
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
-              <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+              {/* <SummaryItemText>Subtotal</SummaryItemText>
+              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice> */}
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>

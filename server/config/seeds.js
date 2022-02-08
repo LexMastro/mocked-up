@@ -77,7 +77,7 @@ db.once("open", async () => {
         desc: "Mockup of magazine layout",
         img: "https://assets-global.website-files.com/5bfd6f4468ee7943c2d331dd/61042a34a8a6eb20172f0854_Open%20Hardcover%20Book%20Mockup-2500-2.jpg",
         category: categories[0]._id,
-        color: ["psd", "jpg"],
+        color: ["indd"],
         price: 20.0,
         quantity: 500,
       },
