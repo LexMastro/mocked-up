@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 
 const Container = styled.div`
   height: 60px;
+  background-color: coral;
   ${mobile({ height: "50px" })}
 `;
 
@@ -77,7 +78,14 @@ const Navbar = () => {
             <Button onClick={logout}>Logout</Button>
           </MenuItem>
           <MenuItem>
-            <Link to="/cart">
+            <Link
+              to="/cart"
+              style={{
+                textDecoration: "none",
+                color: "red",
+                cursor: "pointer",
+              }}
+            >
               <Badge badgeContent={quantity} color="primary">
                 <ShoppingCartOutlined />
               </Badge>

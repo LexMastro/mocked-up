@@ -128,8 +128,8 @@ const Product = () => {
     <span>Loading...</span>
   ) : (
     <Container>
-      <Navbar />
       <Announcement />
+      <Navbar />
       <Wrapper>
         <ImgContainer>
           <Image src={product.img} />

@@ -1,9 +1,5 @@
 import { useQuery } from "@apollo/client";
-import {
-  FavoriteBorderOutlined,
-  SearchOutlined,
-  ShoppingCartOutlined,
-} from "@material-ui/icons";
+import { SearchOutlined, ShoppingCartOutlined } from "@material-ui/icons";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addProduct } from "../redux/cartRedux";
@@ -54,6 +50,7 @@ const Icon = styled.div`
   height: 40px;
   border-radius: 50%;
   background-color: white;
+  color: red;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -86,17 +83,28 @@ const Product = ({ product }) => {
       <Image src={product.img} />
       <Info>
         <Icon>
-          <Link onClick={handleClick}>
+          <Link
+            style={{
+              textDecoration: "none",
+              color: "red",
+              cursor: "pointer",
+            }}
+            onClick={handleClick}
+          >
             <ShoppingCartOutlined />
           </Link>
         </Icon>
         <Icon>
-          <Link to={`/product/${product._id}`}>
+          <Link
+            to={`/product/${product._id}`}
+            style={{
+              textDecoration: "none",
+              color: "red",
+              cursor: "pointer",
+            }}
+          >
             <SearchOutlined />
           </Link>
-        </Icon>
-        <Icon>
-          <FavoriteBorderOutlined />
         </Icon>
       </Info>
     </Container>
