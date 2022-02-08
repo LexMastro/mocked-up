@@ -72,15 +72,20 @@ const NewsletterForm = ({ status, message, onValidated }) => {
     >
       <h3
         className="mb-1 uppercase font-bold"
-        style={{ fontSize: "30px", marginBottom: "30px" }}
+        style={{ fontSize: "25px", marginBottom: "30px", textAlign: "center" }}
       >
         Subscribe to Mockup Newsletter
       </h3>
       <h3
         className="mb-1 uppercase font-light"
-        style={{ fontSize: "20px", marginBottom: "30px", fontWeight: "200" }}
+        style={{
+          fontSize: "15px",
+          marginBottom: "30px",
+          fontWeight: "200",
+          textAlign: "center",
+        }}
       >
-        Be the first to have access to latest designs & discounts!
+        Be the first to access to latest designs & discounts!
       </h3>
       <div
         style={{
@@ -90,7 +95,7 @@ const NewsletterForm = ({ status, message, onValidated }) => {
           flexDirection: "row",
         }}
       >
-        <div className="mc-field-group" style={{ width: "85%" }}>
+        <div className="mc-field-group" style={{ width: "80%" }}>
           <input
             style={{ padding: 10, width: "100%" }}
             onChange={(event) => setEmail(event?.target?.value ?? "")}
@@ -100,7 +105,10 @@ const NewsletterForm = ({ status, message, onValidated }) => {
           />
         </div>
         <div className="button-wrap wp-block-button">
-          <button style={{ padding: 10 }} onClick={handleFormSubmit}>
+          <button
+            style={{ padding: 10, marginLeft: 20 }}
+            onClick={handleFormSubmit}
+          >
             Submit
           </button>
         </div>

@@ -15,14 +15,15 @@ const Container = styled.div``;
 const Wrapper = styled.div`
   padding: 50px;
   display: flex;
+
   ${mobile({ padding: "10px", flexDirection: "column" })}
 `;
 const ImgContainer = styled.div`
-  flex: 1;
+  flex: 2;
 `;
 const Image = styled.img`
   width: 100%;
-  height: 90vh;
+  height: 75vh;
   object-fit: cover;
   ${mobile({ height: "40vh" })}
 `;
@@ -56,7 +57,17 @@ const FilterTitle = styled.span`
   font-size: 20px;
   font-weight: 200;
 `;
-const FilterColor = styled.p``;
+const FilterColor = styled.button`
+  border: none;
+  padding: 10px;
+  border: 2px solid lightblue;
+  background-color: white;
+  cursor: pointer;
+  margin: 10px;
+  &:hover {
+    background-color: #f8f4f4;
+  }
+`;
 const AddContainer = styled.div`
   width: 50%;
   display: flex;
@@ -81,10 +92,11 @@ const Amount = styled.span`
 `;
 const Button = styled.button`
   padding: 15px;
-  border: 2px solid teal;
+  border: 2px solid lightblue;
   background-color: white;
   cursor: pointer;
   font-weight: 500;
+  margin-top: 30px;
   &:hover {
     background-color: #f8f4f4;
   }
@@ -112,8 +124,6 @@ const Product = () => {
     dispatch(addProduct({ ...product, quantity, color }));
   };
 
-
-
   return loading ? (
     <span>Loading...</span>
   ) : (
@@ -133,10 +143,8 @@ const Product = () => {
               <FilterTitle>File Type:</FilterTitle>
               {product.color?.map((c, index) => {
                 return (
-                  <FilterColor key={c} >
-                    
-                    <Button onClick={() => setColor(c)}>{c}</Button>
-                    
+                  <FilterColor key={c} onClick={() => setColor(c)}>
+                    {c}
                   </FilterColor>
                 );
               })}
@@ -148,8 +156,8 @@ const Product = () => {
               <Amount>{quantity}</Amount>
               <Add onClick={() => handleQuantity("inc")} />
             </AmountContainer>
-            <Button onClick={handleClick}>ADD TO CART</Button>
           </AddContainer>
+          <Button onClick={handleClick}>ADD TO CART</Button>
         </InfoContainer>
       </Wrapper>
       <Newsletter />

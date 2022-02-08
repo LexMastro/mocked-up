@@ -32,6 +32,7 @@ const Title = styled.h1`
 
 const Top = styled.div`
   display: flex;
+  flex: 3;
   align-items: center;
   justify-content: space-between;
   padding: 20px;
@@ -47,9 +48,9 @@ const TopButton = styled.button`
   color: ${(props) => props.type === "filled" && "white"};
 `;
 
-const TopTexts = styled.div`
-  ${mobile({ display: "none" })}
-`;
+// const TopTexts = styled.div`
+//   ${mobile({ display: "none" })}
+// `;
 const TopText = styled.span`
   text-decoration: underline;
   cursor: pointer;
@@ -64,11 +65,14 @@ const Bottom = styled.div`
 
 const Info = styled.div`
   flex: 3;
+  margin-left: 20px;
+
 `;
 
 const Product = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
   ${mobile({ flexDirection: "column" })}
 `;
 
@@ -128,18 +132,17 @@ const ProductPrice = styled.div`
   ${mobile({ marginBottom: "20px" })}
 `;
 
-const Hr = styled.hr`
-  background-color: #eee;
-  border: none;
-  height: 1px;
-`;
 
 const Summary = styled.div`
   flex: 1;
   border: 0.5px solid lightgray;
   border-radius: 10px;
   padding: 20px;
-  height: 50vh;
+  height: 20vh;
+  display: flex;
+  flex-direction: column;
+  margin-left: 120px;
+  margin-right: 20px;
 `;
 
 const SummaryTitle = styled.h1`
@@ -149,12 +152,9 @@ const SummaryTitle = styled.h1`
 const SummaryItem = styled.div`
   margin: 30px 0px;
   display: flex;
-  justify-content: space-between;
   font-weight: ${(props) => props.type === "total" && "500"};
   font-size: ${(props) => props.type === "total" && "24px"};
 `;
-
-const SummaryItemText = styled.span``;
 
 const SummaryItemPrice = styled.span``;
 
@@ -251,14 +251,10 @@ const Cart = () => {
       <Wrapper>
         <Title>YOUR BAG</Title>
         <Top>
-          <TopButton onClick={submitCheckout}>CONTINUE SHOPPING</TopButton>
-          <TopTexts>
-            <TopText>Shopping Bag({cart.products.length})</TopText>
-            <TopText>Your Wishlist ()</TopText>
-          </TopTexts>
-          <Link to="">
-            <TopButton type="filled">CHECKOUT NOW</TopButton>
+          <Link to="/">
+            <TopButton>CONTINUE SHOPPING</TopButton>
           </Link>
+          <TopText>Shopping Bag({cart.products.length})</TopText>
         </Top>
         <Bottom>
           <Info>
@@ -271,7 +267,7 @@ const Cart = () => {
                       <b>Product:</b> {product.title}
                     </ProductName>
                     <ProductId>
-                      <b>ID:</b> {product._id}
+                      <b>Description:</b> {product.desc}
                     </ProductId>
                     <ProductColor>
                       <b>File Type:</b> {product.color}
@@ -291,16 +287,10 @@ const Cart = () => {
               </Product>
             ))}
           </Info>
-          <Hr />
           <Summary>
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
-            <SummaryItem>
-              {/* <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice> */}
-            </SummaryItem>
             <SummaryItem type="total">
-              <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>${calculateTotal()}</SummaryItemPrice>
+              <SummaryItemPrice>Total: ${calculateTotal()}</SummaryItemPrice>
             </SummaryItem>
             <StripeCheckout
               name="MOCKUP"

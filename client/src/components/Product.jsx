@@ -1,10 +1,15 @@
+import { useQuery } from "@apollo/client";
 import {
   FavoriteBorderOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
 } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../redux/cartRedux";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { QUERY_PRODUCT } from "../utils/queries";
 
 const Info = styled.div`
   opacity: 0;
@@ -61,12 +66,29 @@ const Icon = styled.div`
 `;
 
 const Product = ({ product }) => {
+  const { id } = useParams();
+  const [quantity] = useState(1);
+  const [color] = useState("");
+  const dispatch = useDispatch();
+  const { data } = useQuery(QUERY_PRODUCT, {
+    variables: {
+      id,
+    },
+  });
+  console.log(data);
+
+  const handleClick = () => {
+    dispatch(addProduct({ ...product, quantity, color }));
+  };
+
   return (
     <Container>
       <Image src={product.img} />
       <Info>
         <Icon>
-          <ShoppingCartOutlined />
+          <Link onClick={handleClick}>
+            <ShoppingCartOutlined />
+          </Link>
         </Icon>
         <Icon>
           <Link to={`/product/${product._id}`}>

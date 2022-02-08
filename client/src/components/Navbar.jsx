@@ -19,25 +19,6 @@ const Wrapper = styled.div`
   ${mobile({ padding: "10px 0px" })}
 `;
 
-// const Left = styled.div`
-//   flex: 1;
-//   display: flex;
-//   align-items: center;
-// `;
-
-// const SearchContainer = styled.div`
-//   border: 0.5px solid lightgray;
-//   display: flex;
-//   align-items: center;
-//   margin-left: 25px;
-//   padding: 5px;
-// `;
-
-// const Input = styled.input`
-//   border: none;
-//   ${mobile({ width: "50px" })}
-// `;
-
 const Center = styled.div`
   flex: 0;
   text-align: center;
@@ -64,10 +45,10 @@ const MenuItem = styled.div`
 `;
 
 const Navbar = () => {
+  // const [quantity, setQuantity] = useState(1);
   const quantity = useSelector((state) => state.cart.quantity);
-
-  
-  const isLoggedIn = localStorage.getItem('id_token');
+  console.log(quantity);
+  const isLoggedIn = localStorage.getItem("id_token");
 
   // const user = useSelector((state) => state.user);
 
@@ -95,13 +76,13 @@ const Navbar = () => {
           <MenuItem>
             <Button onClick={logout}>Logout</Button>
           </MenuItem>
-          <Link to="/cart">
-            <MenuItem>
+          <MenuItem>
+            <Link to="/cart">
               <Badge badgeContent={quantity} color="primary">
                 <ShoppingCartOutlined />
               </Badge>
-            </MenuItem>
-          </Link>
+            </Link>
+          </MenuItem>
         </Right>
       );
     }
