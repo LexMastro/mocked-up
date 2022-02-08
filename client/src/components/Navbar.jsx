@@ -3,8 +3,8 @@ import { ShoppingCartOutlined } from "@material-ui/icons";
 import React from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   height: 60px;
@@ -46,16 +46,15 @@ const MenuItem = styled.div`
 `;
 
 const Navbar = () => {
-  // const [quantity, setQuantity] = useState(1);
-  const quantity = useSelector((state) => state.cart.quantity);
-  console.log(quantity);
+  // const [setQuantity] = useState(1);
+  // console.log(quantity);
   const isLoggedIn = localStorage.getItem("id_token");
 
-  // const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
 
   function logout(event) {
     // call the logout endpoint on server
-    // localStorage.clear();
+    localStorage.clear();
 
     const root = JSON.parse(localStorage.getItem("persist:root"));
 
@@ -70,6 +69,8 @@ const Navbar = () => {
     window.location.href = "/";
   }
 
+  const quantity = useSelector((state) => state.cart.products.length);
+  
   function renderAuth() {
     if (isLoggedIn) {
       return (
